@@ -18,6 +18,9 @@ app.use((err,req,res,next)=>{
 app.use(healthz);
 app.use('/v1',createUser);
 app.use('/v1/user',userSelf);
+app.all((req,res,next)=>{
+  res.setHeader("Cache-Control", "no-cache").status(404).json().end();
+});
 app.listen(port,()=>{
   mysql.createConnection({
     user:'root',        

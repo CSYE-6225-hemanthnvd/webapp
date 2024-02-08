@@ -46,8 +46,9 @@ router.put('/self',async (req,res,next)=>{
   }else{
     res.setHeader("Cache-Control", "no-cache").status(401).json().end();
   }
-
-
 });
+router.use('/self',(req,res,next)=>{
+  res.setHeader("Cache-Control", "no-cache").status(405).json().end();
+})
 
 exports.userSelf = router;
