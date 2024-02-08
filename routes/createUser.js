@@ -27,7 +27,6 @@ router.post('/user',async (req,res,next)=>{
     console.log(err);
     return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
   }
-
   res.setHeader("Cache-Control", "no-cache").status(200).json({
     "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,
     "first_name": req.body.first_name,
@@ -37,7 +36,4 @@ router.post('/user',async (req,res,next)=>{
     "account_updated": (await user.findOne({where:{username:req.body.username}})).dataValues.account_updated
   }).end()  
 });
-router.use('/user',(req,res,next)=>{
-  res.setHeader("Cache-Control", "no-cache").status(405).json().end();
-})
 exports.createUser = router;
