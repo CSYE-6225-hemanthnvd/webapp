@@ -4,6 +4,9 @@ const user = require('../models/user');
 const bcrypt = require('bcrypt');
 
 router.get('/self',async (req,res,next)=>{
+  if(Object.keys(req.body).length!=0){
+    return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
+  }
   [username,password]= Buffer.from(req.headers.authorization.split(' ')[1],'base64').toString().split(':');
   const currentUser = await user.findOne({where:{username:username}});
   if(currentUser && await bcrypt.compare(password,currentUser.password)){
@@ -48,7 +51,7 @@ router.put('/self',async (req,res,next)=>{
   }
 });
 router.use('/self',(req,res,next)=>{
-  res.setHeader("Cache-Control", "no-cache").status(405).json().end();
+  return res.setHeader("Cache-Control", "no-cache").status(405).json().end();
 })
 
 exports.userSelf = router;
