@@ -21,7 +21,6 @@ router.get('/healthz',async (req, res, next)=>{
     res.setHeader("Cache-Control", "no-cache").status(503).json().end();
   }
 })
-
 router.use('/healthz',(req,res,next)=>{
   res.setHeader("Cache-Control", "no-cache").status(405).json().end();
 })
