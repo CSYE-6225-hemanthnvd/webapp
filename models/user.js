@@ -22,6 +22,9 @@ const user = sequelize.define("user", {
   username:{
     type: Sequelize.STRING,
     allowNull: false,
+    validate:{
+      isEmail: true
+    }
   },
   account_created:{
     type: Sequelize.STRING,
