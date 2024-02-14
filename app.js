@@ -1,7 +1,23 @@
 const express = require('express');
+const user = require('./models/user');
 const { healthz } = require('./routes/health');
 const { createUser } = require('./routes/createUser');
 const {userSelf} = require('./routes/userSelf');
+const mysql = require('mysql2/promise');
+const { sequelize } = require('./db');
+
+mysql.createConnection({
+    user:'root',        
+    password : '123'
+  }).then((connection) => {
+    connection.query('CREATE DATABASE IF NOT EXISTS assignment01;').then(() => {
+      sequelize.sync().then((result)=>{
+        // console.log(result);
+      }).catch((err)=>{
+        console.log(err);
+      });
+    })
+})
 
 const app = express();
 app.use(express.json());
