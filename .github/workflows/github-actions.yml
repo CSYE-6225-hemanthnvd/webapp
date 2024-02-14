@@ -13,9 +13,7 @@ jobs:
         collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
         mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
         mysql root password: 123 # Required if "mysql user" is empty, default is empty. The root superuser password
-    - name: Check out repository code
-      uses: actions/checkout@v4
     - run: npm install
     - run: npm test
     - run: npm start
-    
+
