@@ -15,9 +15,6 @@ const v1UserPost = async (req,res,next)=>{
       return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
     }
   }  
-  // if(await user.findOne({where:{username:req.body.username}})){
-  //   return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
-  // }
   const hash = await bcrypt.hash(req.body.password,bcrypt.genSaltSync(10));
   try{
     await user.create({first_name:req.body.first_name,last_name:req.body.last_name,password:hash,username:req.body.username,account_created:new Date().toISOString(),account_updated:new Date().toISOString()});
