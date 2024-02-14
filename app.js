@@ -17,7 +17,7 @@ mysql.createConnection({
         console.log(err);
       });
     })
-})
+}).catch((err)=>{console.log(err)})
 
 const app = express();
 app.use(express.json());
