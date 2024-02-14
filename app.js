@@ -1,4 +1,5 @@
 const express = require('express');
+const user = require('./models/user');
 const { healthz } = require('./routes/health');
 const { createUser } = require('./routes/createUser');
 const {userSelf} = require('./routes/userSelf');
