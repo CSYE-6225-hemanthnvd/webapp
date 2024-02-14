@@ -9,7 +9,6 @@ describe("Create user post request", ()=>{
       "password": "skdjfhskdfjhg",
       "username": "jane.doe@example.com"
     }).expect(400);
-    jest.setTimeout(30000);
   }),
   it("Create account and get account", async ()=>{
     await supertest(app).post("/v1/user").send({
@@ -23,7 +22,6 @@ describe("Create user post request", ()=>{
       expect(res.body.username).toBe("jane.doe@example.com");
     })
     await supertest(app).get("/v1/user/self").auth('jane.doe@example.com','skdjfhskdfjhg').expect(200)
-    jest.setTimeout(30000);
   }),
   it("Update account and verify", async ()=>{
     await supertest(app).put("/v1/user/self").auth('jane.doe@example.com','skdjfhskdfjhg').send({
@@ -34,6 +32,5 @@ describe("Create user post request", ()=>{
       expect(res.body.first_name).toBe("Walter");
       expect(res.body.last_name).toBe("White");
     });
-    jest.setTimeout(30000);
   });
 });
