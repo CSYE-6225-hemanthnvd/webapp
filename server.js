@@ -7,7 +7,8 @@ const port = process.env.PORT || 8080;
 app.listen(port,()=>{
   mysql.createConnection({
     user:'root',        
-    password : '123'
+    password : '123',
+    host: 'localhost'
   }).then((connection) => {
     connection.query('CREATE DATABASE IF NOT EXISTS assignment01;').then(() => {
       sequelize.sync().then((result)=>{
