@@ -16,6 +16,6 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v4
     - run: npm install
-    - run: npm test
     - run: npm start
+    - run: npm test
 
