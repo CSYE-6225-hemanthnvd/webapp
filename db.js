@@ -5,7 +5,7 @@ const sequelize= new Sequelize(
   '123',
   {
     dialect:'mysql',
-    host:'localhost',
+    host:'localhost'
   }
 );
 const connectToDb = async ()=>{
