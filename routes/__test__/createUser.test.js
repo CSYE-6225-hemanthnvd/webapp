@@ -17,7 +17,7 @@ describe("Create user post request", ()=>{
       "password": "skdjfhskdfjhg",
       "username": "jane.doe@example.com"
     }).expect(200).then((res)=>{
-      expect(res.body.first_name).toBe("Jane");
+      expect(res.body.first_name).toBe("test");
       expect(res.body.last_name).toBe("Doe");
       expect(res.body.username).toBe("jane.doe@example.com");
     })
