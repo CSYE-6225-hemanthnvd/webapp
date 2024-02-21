@@ -1,0 +1,13 @@
+[Unit]
+Description=CSYE6225 Nodejs Application
+After=network.target
+
+[Service]
+Environment=PORT=8080
+Type=simple
+User=csye6225
+ExecStart=/usr/bin/node /var/www/webapp/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

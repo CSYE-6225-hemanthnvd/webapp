@@ -1,0 +1,36 @@
+on:
+  pull_request:
+    branches: 
+      - main
+    types: [closed]
+
+jobs:
+  my-action:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: mirromutth/mysql-action@v1.1
+      with:
+        # host port: 3800 # Optional, default value is 3306. The port of host
+        # container port: 3307 # Optional, default value is 3306. The port of container
+        character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+        collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+        mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+        mysql database: 'assignment01'
+        mysql root password: '123' # Required if "mysql user" is empty, default is empty. The root superuser password
+    - uses: actions/checkout@v4
+    - run: npm install
+    - run: npm test
+    - run: sudo rm -R node_modules
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
+    - run: packer build -var-file=values.pkrvars.hcl build.pkr.hcl
+
