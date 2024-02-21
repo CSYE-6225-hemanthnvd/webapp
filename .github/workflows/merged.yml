@@ -32,5 +32,7 @@ jobs:
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
-    - run: packer build -var-file=values.pkrvars.hcl build.pkr.hcl
+    - run: |
+        cd packer
+        packer build -var-file=values.pkrvars.hcl build.pkr.hcl
 
