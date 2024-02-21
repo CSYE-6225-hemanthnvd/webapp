@@ -32,5 +32,18 @@ jobs:
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
-    - run: packer build -var-file=values.pkrvars.hcl build.pkr.hcl
+    
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: "latest"
+    - name: Run `packer init`
+      id: init
+      run: |
+        cd packer
+        packer init build.pkr.hcl
+    - run: |
+        cd packer
+        packer build -var-file=values.pkrvars.hcl build.pkr.hcl
 
