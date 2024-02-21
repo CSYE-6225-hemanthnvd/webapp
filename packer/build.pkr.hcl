@@ -58,8 +58,7 @@ source "googlecompute" "centos" {
 build {
   name = "centos-stream-8-packer-build"
   source "source.googlecompute.centos" {
-    name             = "central-build"
-    credentials_file = var.credentials_file
+    name = "central-build"
   }
   provisioner "file" {
     source      = "../../webapp"
