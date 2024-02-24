@@ -4,7 +4,7 @@ const app = require("../../app");
 describe("Create user post request", ()=>{
   it("Returns 400 if authorization is found",async ()=>{
     await supertest(app).post("/v1/user").auth('username','password').send({
-      "first_name": "Pane",
+      "first_name": "Jane",
       "last_name": "Doe",
       "password": "skdjfhskdfjhg",
       "username": "jane.doe@example.com"
