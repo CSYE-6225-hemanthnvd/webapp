@@ -45,7 +45,7 @@ variable credentials_file {
 // values.pkrvars.hcl
 
 // gcp.pkr.hcl
-source "googlecomput" "centos" {
+source "googlecompute" "centos" {
   project_id          = var.project_id
   source_image        = var.source_image
   source_image_family = var.source_image_family
