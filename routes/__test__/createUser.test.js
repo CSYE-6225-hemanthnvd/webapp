@@ -4,7 +4,7 @@ const app = require("../../app");
 describe("Create user post request", ()=>{
   it("Returns 400 if authorization is found",async ()=>{
     await supertest(app).post("/v1/user").auth('username','password').send({
-      "first_name": "Jane",
+      "first_name": "Pane",
       "last_name": "Doe",
       "password": "skdjfhskdfjhg",
       "username": "jane.doe@example.com"
@@ -13,7 +13,7 @@ describe("Create user post request", ()=>{
   it("Create account and get account", async ()=>{
     await supertest(app).post("/v1/user").send({
       "first_name": "Jane",
-      "last_name": "Doe",
+      "last_name": "White",
       "password": "skdjfhskdfjhg",
       "username": "jane.doe@example.com"
     }).expect(200).then((res)=>{
