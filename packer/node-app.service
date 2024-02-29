@@ -6,8 +6,15 @@ After=network.target
 Environment=PORT=8080
 Type=simple
 User=csye6225
+Group=csye6225
+WorkingDirectory=/var/www/webapp
+ExecStartPre=/bin/bash -c 'while [ ! -f /var/www/webapp/.env ]; do sleep 1; done'
 ExecStart=/usr/bin/node /var/www/webapp/server.js
-Restart=on-failure
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=csye6225
 
 [Install]
 WantedBy=multi-user.target

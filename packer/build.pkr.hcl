@@ -11,31 +11,31 @@ packer {
 // variables.pkr.hcl
 variable project_id {
   type    = string
-  default = "#{projectid}#"
+  default = "cool-academy-413922"
 }
 variable source_image {
   type    = string
-  default = "#{sourceimage}#"
+  default = "centos-stream-8-v20240110"
 }
 variable source_image_family {
   type    = string
-  default = "#{sourceimagefamily}#"
+  default = "centos-stream-8"
 }
 variable machine_type {
   type    = string
-  default = "#{machinetype}#"
+  default = "e2-standard-2"
 }
 variable image_name {
   type    = string
-  default = ""
+  default = "assignment04-nodeapp"
 }
 variable ssh_username {
   type    = string
-  default = "#{sshusername}#"
+  default = "packer"
 }
 variable zone {
   type    = string
-  default = "#{zone}#"
+  default = "us-central1-a"
 }
 variable credentials_file {
   type    = string

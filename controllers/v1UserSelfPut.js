@@ -24,7 +24,7 @@ const v1UserSelfPut = async (req,res,next)=>{
     }
     currentUser.account_updated=new Date().toISOString();
     currentUser.save();
-    res.setHeader("Cache-Control", "no-cache").status(200).json().end();
+    res.setHeader("Cache-Control", "no-cache").status(204).json().end();
   }else{
     res.setHeader("Cache-Control", "no-cache").status(401).json().end();
   }

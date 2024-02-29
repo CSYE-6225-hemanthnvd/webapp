@@ -22,7 +22,7 @@ const v1UserPost = async (req,res,next)=>{
     console.log(err);
     return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
   }
-  res.setHeader("Cache-Control", "no-cache").status(200).json({
+  res.setHeader("Cache-Control", "no-cache").status(201).json({
     "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,
     "first_name": req.body.first_name,
     "last_name": req.body.last_name,
