@@ -1,11 +1,13 @@
 const {Sequelize} = require('sequelize');
+require("dotenv").config();
+
 const sequelize= new Sequelize(
-  'assignment01',
-  'root',
-  '123',
+  "webapp",
+  process.env.USER || "root",
+  process.env.PASSWORD || "123",
   {
     dialect:'mysql',
-    host:'localhost'
+    host: process.env.HOST || "localhost"
   }
 );
 const connectToDb = async ()=>{
@@ -14,6 +16,7 @@ const connectToDb = async ()=>{
     return true;
   }
   catch(error){
+    console.log(error);
     return false;
   }
 }

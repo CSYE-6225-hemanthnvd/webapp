@@ -9,6 +9,7 @@ describe("healthz", ()=>{
     await supertest(app).delete("/healthz").expect(405);
     await supertest(app).head("/healthz").expect(405);
     await supertest(app).options("/healthz").expect(405);
+    await supertest(app).get("/healthz").expect(200);
   }),
   it("Sends 400 if request has any body or query parameters", async()=>{
     await supertest(app).get("/healthz").send({"key":"value"}).expect(400);
