@@ -10,7 +10,12 @@ jobs:
         collation server: 'utf8_general_ci'
         mysql version: '8.0'
         mysql database: 'webapp'
-        mysql root password: '123'
+        mysql root password: ${{ secrets.PASSWORD }}
     - uses: actions/checkout@v4
     - run: npm install
-    - run: npm test
+    - name: Run tests
+      env:
+        USER: ${{ secrets.USER }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        HOST: ${{ secrets.HOST }}
+      run: npm test
