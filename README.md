@@ -36,7 +36,7 @@ $ cd packer
 $ packer init build.pkr.hcl
 ```
 
-  Format HCL2 configuration files to a canonical format and style:
+  Format HCL2 configuration files to canonical format and style:
 
 ```console
 $ cd packer
