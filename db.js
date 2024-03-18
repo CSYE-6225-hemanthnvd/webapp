@@ -1,4 +1,5 @@
 const {Sequelize} = require('sequelize');
+const logger = require('./logger');
 require("dotenv").config();
 
 const sequelize= new Sequelize(
@@ -16,7 +17,7 @@ const connectToDb = async ()=>{
     return true;
   }
   catch(error){
-    console.log(error);
+    logger.error(error);
     return false;
   }
 }
