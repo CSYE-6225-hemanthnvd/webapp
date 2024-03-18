@@ -23,7 +23,9 @@ jobs:
         USER: ${{ secrets.USER }}
         PASSWORD: ${{ secrets.PASSWORD }}
         HOST: ${{ secrets.HOST }}
-      run: npm test
+      run: |
+        sudo mkdir /var/log/webapp
+        npm test
     - run: sudo rm -R node_modules
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'

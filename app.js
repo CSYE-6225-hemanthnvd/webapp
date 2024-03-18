@@ -4,11 +4,12 @@ const { healthz } = require('./routes/health');
 const { createUser } = require('./routes/createUser');
 const {userSelf} = require('./routes/userSelf');
 const { sequelize } = require('./db');
+const logger = require('./logger');
 
 sequelize.sync().then((result)=>{
-  console.log(result);
+  // logger.info(result);
 }).catch((err)=>{
-  console.log(err);
+  logger.error(err);
 });
 const app = express();
 app.use(express.json());
