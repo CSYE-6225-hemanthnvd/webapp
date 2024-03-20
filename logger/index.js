@@ -2,13 +2,13 @@ const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, json, errors} = format;
 
 const logger = createLogger({
-  level: 'info',
+  level: 'debug',
   format: combine(
     timestamp(),
     json(),
     errors({stack:true}),
   ),
-  defaultMeta: { service: 'user-service' },
+  defaultMeta: { application: 'webapp' },
   transports: [
     new transports.Console(),
     new transports.File({ filename: '/var/log/webapp/webapp.log' }),

@@ -23,7 +23,7 @@ variable source_image_family {
 }
 variable machine_type {
   type    = string
-  default = "e2-standard-8"
+  default = "e2-standard-16"
 }
 variable image_name {
   type    = string
