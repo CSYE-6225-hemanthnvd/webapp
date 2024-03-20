@@ -20,16 +20,19 @@ const v1UserPost = async (req,res,next)=>{
   try{
     await user.create({first_name:req.body.first_name,last_name:req.body.last_name,password:hash,username:req.body.username,account_created:new Date().toISOString(),account_updated:new Date().toISOString()});
   }catch(err){
-    logger.error(err);
+    logger.error({
+      message: err.name,
+      log_type: "Sequelize"
+    });
     return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
   }
   logger.info({
+    message: "New user created",
+    log_type: "User",
     "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,
     "first_name": req.body.first_name,
     "last_name": req.body.last_name,
-    "username": req.body.username,
-    "account_created": (await user.findOne({where:{username:req.body.username}})).dataValues.account_created,
-    "account_updated": (await user.findOne({where:{username:req.body.username}})).dataValues.account_updated
+    "account_created": (await user.findOne({where:{username:req.body.username}})).dataValues.account_created
   });
   res.setHeader("Cache-Control", "no-cache").status(201).json({
     "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,

@@ -16,8 +16,8 @@ const connectToDb = async ()=>{
     await sequelize.authenticate();
     return true;
   }
-  catch(error){
-    logger.error(error);
+  catch(err){
+    logger.error(err);
     return false;
   }
 }
