@@ -5,6 +5,7 @@ const { createUser } = require('./routes/createUser');
 const {userSelf} = require('./routes/userSelf');
 const { sequelize } = require('./db');
 const logger = require('./logger');
+const { userVerify } = require('./routes/userVerify');
 
 sequelize.sync().then((result)=>{
   // logger.info(result);
@@ -21,6 +22,7 @@ app.use((err,req,res,next)=>{
 })
 app.use(healthz);
 app.use('/v1',createUser);
+app.use('/v1/user',userVerify);
 app.use('/v1/user',userSelf);
 app.all((req,res,next)=>{
   res.setHeader("Cache-Control", "no-cache").status(404).json().end();

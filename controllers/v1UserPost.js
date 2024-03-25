@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const user = require('../models/user');
 const logger = require('../logger');
+const publishMessageWithCustomAttributes = require('../pubsub');
 
 const v1UserPost = async (req,res,next)=>{
   if(req.headers.authorization!==undefined){
@@ -26,21 +27,28 @@ const v1UserPost = async (req,res,next)=>{
     });
     return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
   }
+  const dataValues = (await user.findOne({where:{username:req.body.username}})).dataValues
   logger.info({
     message: "New user created",
     log_type: "User",
-    "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,
+    "id": dataValues.id,
     "first_name": req.body.first_name,
     "last_name": req.body.last_name,
-    "account_created": (await user.findOne({where:{username:req.body.username}})).dataValues.account_created
+    "account_created": dataValues.account_created
   });
+  publishMessageWithCustomAttributes("verify_email",{
+    first_name:req.body.first_name,
+    last_name:req.body.last_name,
+    username:req.body.username,
+    id:dataValues.id
+  })
   res.setHeader("Cache-Control", "no-cache").status(201).json({
-    "id": (await user.findOne({where:{username:req.body.username}})).dataValues.id,
+    "id": dataValues.id,
     "first_name": req.body.first_name,
     "last_name": req.body.last_name,
     "username": req.body.username,
-    "account_created": (await user.findOne({where:{username:req.body.username}})).dataValues.account_created,
-    "account_updated": (await user.findOne({where:{username:req.body.username}})).dataValues.account_updated
+    "account_created": dataValues.account_created,
+    "account_updated": dataValues.account_updated
   }).end()  
 }
 module.exports=v1UserPost;

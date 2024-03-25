@@ -27,6 +27,17 @@ const user = sequelize.define("user", {
       isEmail: true
     }
   },
+  is_verified:{
+    type: Sequelize.BOOLEAN,
+    allowNull:false,
+    defaultValue:false  
+  },
+  email_sent:{
+    type: Sequelize.DATE,
+  },
+  link_clicked:{
+    type: Sequelize.DATE
+  },
   account_created:{
     type: Sequelize.STRING,
   },

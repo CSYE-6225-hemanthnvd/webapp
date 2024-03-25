@@ -61,4 +61,3 @@ $ packer validate .
 $ cd packer
 $ packer build -var-file=values.pkrvars.hcl build.pkr.hcl
 ```
-Test
