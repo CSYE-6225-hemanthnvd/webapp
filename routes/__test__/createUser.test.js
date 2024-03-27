@@ -1,5 +1,6 @@
 const supertest = require("supertest");
 const app = require("../../app");
+const user = require("../../models/user");
 
 describe("Create user post request", ()=>{
   it("Returns 400 if authorization is found",async ()=>{
@@ -21,9 +22,15 @@ describe("Create user post request", ()=>{
       expect(res.body.last_name).toBe("White");
       expect(res.body.username).toBe("heisenberg@example.com");
     })
+    const currentUser = await user.findOne({ where: { username: "heisenberg@example.com" } });
+    currentUser.is_verified = true;
+    currentUser.save();
     await supertest(app).get("/v1/user/self").auth('heisenberg@example.com','icookmeth').expect(200)
   }),
   it("Update account and verify", async ()=>{
+    const currentUser = await user.findOne({ where: { username: "heisenberg@example.com" } });
+    currentUser.is_verified = true;
+    currentUser.save();
     await supertest(app).put("/v1/user/self").auth('heisenberg@example.com','icookmeth').send({
       "first_name": "Jessie",
       "last_name": "Pinkman"

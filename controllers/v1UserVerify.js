@@ -3,8 +3,16 @@ const user = require('../models/user');
 
 const v1UserVerify = async (req,res,next)=>{
   const currentUser = await user.findOne({where:{id:req.query.id}});
-  if(currentUser){
-    if(Date.now() < currentUser.verify_by){
+  if(!currentUser){
+    logger.warn({
+      message: "Someone tried to verify with wrong userid",
+      log_type: "User Verification",
+    });
+    return res.setHeader("Cache-Control", "no-cache").status(400).json({message:'Invalid user'}).end();
+  }else{
+    currentUser.link_clicked = Date.now();
+    currentUser.save();
+    if((currentUser.link_clicked - currentUser.email_sent) < 120000){
       currentUser.is_verified = true;
       currentUser.save();
       logger.warn({
@@ -19,12 +27,6 @@ const v1UserVerify = async (req,res,next)=>{
       });
       return res.setHeader("Cache-Control", "no-cache").status(410).json({message:'Verification link expired'}).end();
     }
-  }else{
-    logger.warn({
-        message: "Someone tried to verify with wrong userid",
-        log_type: "User Verification",
-    });
-    return res.setHeader("Cache-Control", "no-cache").status(400).json({message:'Invalid user'}).end();
   }
 }
 

@@ -9,11 +9,18 @@ const v1UserSelfPut = async (req,res,next)=>{
     logger.warn({
       message: "User did not provide authorization",
       log_type: "authentication"
-  });
+    });
     return res.setHeader("Cache-Control", "no-cache").status(401).json().end();
   }  
   const currentUser = await user.findOne({where:{username:username}});
   if(currentUser && await bcrypt.compare(password,currentUser.password)){
+    if (currentUser.is_verified == false) {
+      logger.warn({
+        message: `Email not verified for user ${currentUser.id}. Access Denied to update account.`,
+        log_type: "authentication"
+      });
+      return res.setHeader("Cache-Control", "no-cache").status(403).json().end();
+    }
     if(Object.keys(req.body).length===0){
       return res.setHeader("Cache-Control", "no-cache").status(400).json().end();
     }
