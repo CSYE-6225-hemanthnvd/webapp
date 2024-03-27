@@ -17,6 +17,13 @@ const v1UserSelfGet = async (req,res,next)=>{
   }
   const currentUser = await user.findOne({where:{username:username}});
   if(currentUser && await bcrypt.compare(password,currentUser.password)){
+    if (currentUser.is_verified==false){
+      logger.warn({
+        message: `Email not verified for user ${currentUser.id}. Access Denied to get account details.`,
+        log_type: "authentication"
+      });
+      return res.setHeader("Cache-Control", "no-cache").status(403).json().end();
+    }
     res.setHeader("Cache-Control", "no-cache").status(200).json({
       "id": currentUser.id,
       "first_name": currentUser.first_name,

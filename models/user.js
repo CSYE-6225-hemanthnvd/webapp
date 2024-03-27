@@ -1,51 +1,51 @@
-const {Sequelize, UUIDV4} = require('sequelize');
-const {sequelize} = require('../db');
+const { Sequelize } = require('sequelize');
+const { sequelize } = require('../db');
 
 const user = sequelize.define("user", {
-  id:{
-    defaultValue: UUIDV4,
-    type: Sequelize.STRING,
-    primaryKey:true,
+  id: {
+    defaultValue: Sequelize.UUIDV4,
+    type: Sequelize.UUID,
+    primaryKey: true,
   },
-  first_name:{
+  first_name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  last_name:{
+  last_name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  password:{
+  password: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  username:{
+  username: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique:true,
-    validate:{
+    unique: true,
+    validate: {
       isEmail: true
     }
   },
-  is_verified:{
+  is_verified: {
     type: Sequelize.BOOLEAN,
-    allowNull:false,
-    defaultValue:false  
+    allowNull: false,
+    defaultValue: false
   },
-  email_sent:{
-    type: Sequelize.DATE,
+  email_sent: {
+    type: Sequelize.BIGINT,
   },
-  link_clicked:{
-    type: Sequelize.DATE
+  link_clicked: {
+    type: Sequelize.BIGINT,
   },
-  account_created:{
+  account_created: {
     type: Sequelize.STRING,
   },
-  account_updated:{
+  account_updated: {
     type: Sequelize.STRING,
-  },  
+  },
 },
-{
-  timestamps:false
-});
-module.exports=user;
+  {
+    timestamps: false
+  });
+module.exports = user;
