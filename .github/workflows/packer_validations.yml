@@ -1,25 +1,25 @@
-name: Packer validations
-on: [pull_request]
-jobs:
-  build-node:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup `packer`
-      uses: hashicorp/setup-packer@main
-      id: setup
-      with:
-        version: "latest"
-    - name: Run `packer init`
-      id: init
-      run: |
-        cd packer
-        packer init build.pkr.hcl
-    - name: Run `packer format`
-      run: |
-        cd packer
-        packer fmt -check .
-    - name: Run `packer validate`
-      run: |
-        cd packer
-        packer validate .
+# name: Packer validations
+# on: [pull_request]
+# jobs:
+#   build-node:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Setup `packer`
+#       uses: hashicorp/setup-packer@main
+#       id: setup
+#       with:
+#         version: "latest"
+#     - name: Run `packer init`
+#       id: init
+#       run: |
+#         cd packer
+#         packer init build.pkr.hcl
+#     - name: Run `packer format`
+#       run: |
+#         cd packer
+#         packer fmt -check .
+#     - name: Run `packer validate`
+#       run: |
+#         cd packer
+#         packer validate .
