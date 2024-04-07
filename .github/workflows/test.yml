@@ -53,7 +53,7 @@ jobs:
             --service-account=virtual-machine@cool-academy-413922.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --metadata=db_name=$DATABASE_NAME,db_private_ipv4=$DATABASE_PRIVATE_IP,db_user=$DATABASE_USER,db_password=$DATABASE_PASSWORD \
-            --metadata-from-file =KEY=/packer/startup_script.sh \
+            --metadata-from-file=/packer/startup_script.sh \
             --network-interface=network-tier=PREMIUM,subnet=backend-subnet \
         echo -n $(($CURRENT_VERSION+1)) | \
         gcloud secrets versions add app-instance-version --data-file=-
