@@ -4,7 +4,7 @@ sudo mkdir www
 sudo cp -r /tmp/webapp /var/www/webapp
 sudo cp /var/www/webapp/packer/node-app.service /etc/systemd/system
 rm -R /tmp/webapp
-sudo dnf update -y
+# sudo dnf update -y
 cd /
 sudo curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
