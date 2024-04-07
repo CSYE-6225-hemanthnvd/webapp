@@ -4,6 +4,24 @@ jobs:
   my-action:
     runs-on: ubuntu-latest
     steps:
+    # - uses: mirromutth/mysql-action@v1.1
+    #   with:
+    #     character set server: 'utf8'
+    #     collation server: 'utf8_general_ci'
+    #     mysql version: '8.0'
+    #     mysql database: 'webapp'
+    #     mysql root password: ${{ secrets.PASSWORD }}
+    - uses: actions/checkout@v4
+    # - run: npm install
+    # - name: Run tests
+    #   env:
+    #     USER: ${{ secrets.USER }}
+    #     PASSWORD: ${{ secrets.PASSWORD }}
+    #     HOST: ${{ secrets.HOST }}
+    #   run: |
+    #     sudo mkdir /var/log/webapp
+    #     npm test
+    # - run: sudo rm -R node_modules
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
