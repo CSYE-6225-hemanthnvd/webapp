@@ -27,7 +27,7 @@ variable machine_type {
 }
 variable image_name {
   type    = string
-  default = "assignment04-nodeapp"
+  default = "assignment04-nodeapp-{{timestamp}}"
 }
 variable ssh_username {
   type    = string
