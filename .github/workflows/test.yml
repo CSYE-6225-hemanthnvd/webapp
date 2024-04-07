@@ -41,7 +41,7 @@ jobs:
         DATABASE_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_PASSWORD")
         LATEST_IMAGE=$(gcloud compute images list --format="value(NAME)" --project "cool-academy-413922" --no-standard-images --sort-by=~creationTimestamp --limit=1)
         CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
-        APP_INSTANCE_TEMPLATE_VERSION=$(($CURRENT_VERSION+1))
+        APP_INSTANCE_TEMPLATE_VERSION=$(($CURRENT_VERSION))
         gcloud compute instance-templates create app-instance-template-$APP_INSTANCE_TEMPLATE_VERSION \
             --machine-type=e2-medium \
             --region=us-central1 \
