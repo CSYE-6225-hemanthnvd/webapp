@@ -74,7 +74,6 @@ jobs:
         gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
             --replacement-method=recreate \
             --max-surge=0 \
-            --max-unavailable=2 \
             --region=us-central1
 
     - name: 'Check Recreation status of instances in the managed instance group'
