@@ -69,12 +69,12 @@ jobs:
     #           app-instance-group-manager \
     #           --template=projects/cool-academy-413922/regions/us-central1/instanceTemplates/app-instance-template-$CURRENT_VERSION \
     #           --region=us-central1 \
-    - name: 'Recreating instances in the managed instance group'
-      run: |
-        gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
-            --replacement-method=recreate \
-            --max-surge=0 \
-            --region=us-central1
+    # - name: 'Recreating instances in the managed instance group'
+    #   run: |
+    #     gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
+    #         --replacement-method=recreate \
+    #         --max-surge=0 \
+    #         --region=us-central1
 
     - name: 'Check Recreation status of instances in the managed instance group'
       run: |
