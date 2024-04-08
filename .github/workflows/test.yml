@@ -56,19 +56,19 @@ jobs:
     #         --metadata-from-file=startup-script=packer/startup_script.sh \
     #         --network-interface=network-tier=PREMIUM,subnet=backend-subnet \
 
-    - name: 'Updating secret'
-      run: |
-          CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
-          echo -n $(($CURRENT_VERSION+1)) | \
-            gcloud secrets versions add APP_INSTANCE_TEMPLATE_VERSION --data-file=-
+    # - name: 'Updating secret'
+    #   run: |
+    #       CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
+    #       echo -n $(($CURRENT_VERSION+1)) | \
+    #         gcloud secrets versions add APP_INSTANCE_TEMPLATE_VERSION --data-file=-
 
-    - name: 'Configuring the managed instance group to use this new template'
-      run: |
-        CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
-        gcloud compute instance-groups managed set-instance-template \
-              app-instance-group-manager \
-              --template=projects/cool-academy-413922/regions/us-central1/instanceTemplates/app-instance-template-$CURRENT_VERSION \
-              --region=us-central1 \
+    # - name: 'Configuring the managed instance group to use this new template'
+    #   run: |
+    #     CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
+    #     gcloud compute instance-groups managed set-instance-template \
+    #           app-instance-group-manager \
+    #           --template=projects/cool-academy-413922/regions/us-central1/instanceTemplates/app-instance-template-$CURRENT_VERSION \
+    #           --region=us-central1 \
     - name: 'Recreating instances in the managed instance group'
       run: gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
               --replacement-method=recreate \
