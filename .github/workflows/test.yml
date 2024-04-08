@@ -33,30 +33,34 @@ jobs:
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
 
-    - name: 'Creating a new Instance Template'
+    # - name: 'Creating a new Instance Template'
+    #   run: |
+    #     DATABASE_NAME=$(gcloud secrets versions access latest --secret="DATABASE_NAME")
+    #     DATABASE_PRIVATE_IP=$(gcloud secrets versions access latest --secret="DATABASE_PRIVATE_IPV4")
+    #     DATABASE_USER=$(gcloud secrets versions access latest --secret="DATABASE_USER")
+    #     DATABASE_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_PASSWORD")
+    #     LATEST_IMAGE=$(gcloud compute images list --format="value(NAME)" --project "cool-academy-413922" --no-standard-images --sort-by=~creationTimestamp --limit=1)
+    #     CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
+    #     APP_INSTANCE_TEMPLATE_VERSION=$(($CURRENT_VERSION+1))
+    #     gcloud compute instance-templates create app-instance-template-$APP_INSTANCE_TEMPLATE_VERSION \
+    #         --machine-type=e2-medium \
+    #         --region=us-central1 \
+    #         --instance-template-region=us-central1 \
+    #         --tags=load-balanced-backend \
+    #         --boot-disk-size=100GB \
+    #         --boot-disk-type=pd-balanced \
+    #         --image=projects/cool-academy-413922/global/images/$LATEST_IMAGE \
+    #         --service-account=virtual-machine@cool-academy-413922.iam.gserviceaccount.com \
+    #         --scopes=https://www.googleapis.com/auth/cloud-platform \
+    #         --metadata=db_name=$DATABASE_NAME,db_private_ipv4=$DATABASE_PRIVATE_IP,db_user=$DATABASE_USER,db_password=$DATABASE_PASSWORD \
+    #         --metadata-from-file=startup-script=packer/startup_script.sh \
+    #         --network-interface=network-tier=PREMIUM,subnet=backend-subnet \
+
+    - name: 'Updating secret'
       run: |
-        DATABASE_NAME=$(gcloud secrets versions access latest --secret="DATABASE_NAME")
-        DATABASE_PRIVATE_IP=$(gcloud secrets versions access latest --secret="DATABASE_PRIVATE_IPV4")
-        DATABASE_USER=$(gcloud secrets versions access latest --secret="DATABASE_USER")
-        DATABASE_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_PASSWORD")
-        LATEST_IMAGE=$(gcloud compute images list --format="value(NAME)" --project "cool-academy-413922" --no-standard-images --sort-by=~creationTimestamp --limit=1)
-        CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
-        APP_INSTANCE_TEMPLATE_VERSION=$(($CURRENT_VERSION))
-        gcloud compute instance-templates create app-instance-template-$APP_INSTANCE_TEMPLATE_VERSION \
-            --machine-type=e2-medium \
-            --region=us-central1 \
-            --instance-template-region=us-central1 \
-            --tags=load-balanced-backend \
-            --boot-disk-size=100GB \
-            --boot-disk-type=pd-balanced \
-            --image=projects/cool-academy-413922/global/images/$LATEST_IMAGE \
-            --service-account=virtual-machine@cool-academy-413922.iam.gserviceaccount.com \
-            --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --metadata=db_name=$DATABASE_NAME,db_private_ipv4=$DATABASE_PRIVATE_IP,db_user=$DATABASE_USER,db_password=$DATABASE_PASSWORD \
-            --metadata-from-file=startup-script=packer/startup_script.sh \
-            --network-interface=network-tier=PREMIUM,subnet=backend-subnet \
-        # echo -n $APP_INSTANCE_TEMPLATE_VERSION | \
-        #   gcloud secrets versions add APP_INSTANCE_TEMPLATE_VERSION --data-file=-
+          CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
+          echo -n $(($CURRENT_VERSION+1)) | \
+            gcloud secrets versions add APP_INSTANCE_TEMPLATE_VERSION --data-file=-
 
     - name: 'Configuring the managed instance group to use this new template'
       run: |
@@ -65,15 +69,16 @@ jobs:
               app-instance-group-manager \
               --template=projects/cool-academy-413922/regions/us-central1/instanceTemplates/app-instance-template-$CURRENT_VERSION \
               --region=us-central1 \
+    - name: 'Recreating instances in the managed instance group'
+      run: gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
+              --replacement-method=recreate \
+              --max-surge=1 \
+              --region=us-central1 \
 
-    - name: 'Re-creating instances in the managed instance group'
+    - name: 'Check Recreation status of instances in the managed instance group'
       run: |
-        gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
-            --replacement-method=recreate \
-            --max-surge=1 \
-            --region=us-central1 \
-        refresh_status=$(gcloud compute instance-groups managed describe app-instance-group-manager --region=us-central1 --format='value(rollingUpdate.status)')
-        while [[ $refresh_status == "REPLACING" ]]; do
+        refresh_status=$(gcloud compute instance-groups managed describe app-instance-group-manager --region=us-central1 --format='value(rollingUpdate.status.versionTarget.isReached)')
+        while [[ $refresh_status == "false" ]]; do
           echo "Managed instance group refresh in progress. Waiting..."
           sleep 10s
         done
