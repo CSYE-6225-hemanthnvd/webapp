@@ -80,7 +80,8 @@ jobs:
       run: |
         gcloud compute instance-groups managed wait-until app-instance-group-manager \
             --version-target-reached \
-            --region=us-central1 \       
+            --region=us-central1
+            
 # jobs:
 #   build-node:
 #     runs-on: ubuntu-latest
