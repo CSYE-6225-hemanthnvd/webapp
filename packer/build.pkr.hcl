@@ -27,7 +27,7 @@ variable machine_type {
 }
 variable image_name {
   type    = string
-  default = "assignment04-nodeapp-{{timestamp}}"
+  default = "csye6225-nodeapp-{{timestamp}}"
 }
 variable ssh_username {
   type    = string
@@ -41,8 +41,6 @@ variable credentials_file {
   type    = string
   default = ""
 }
-
-// values.pkrvars.hcl
 
 // gcp.pkr.hcl
 source "googlecompute" "centos" {

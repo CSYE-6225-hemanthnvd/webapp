@@ -58,6 +58,7 @@ jobs:
           DATABASE_PRIVATE_IP=$(gcloud secrets versions access latest --secret="DATABASE_PRIVATE_IPV4")
           DATABASE_USER=$(gcloud secrets versions access latest --secret="DATABASE_USER")
           DATABASE_PASSWORD=$(gcloud secrets versions access latest --secret="DATABASE_PASSWORD")
+          VM_KEY_ID=$(gcloud secrets versions access latest --secret="VM_KEY_ID")
           LATEST_IMAGE=$(gcloud compute images list --format="value(NAME)" --project "cool-academy-413922" --no-standard-images --sort-by=~creationTimestamp --limit=1)
           CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
           APP_INSTANCE_TEMPLATE_VERSION=$(($CURRENT_VERSION+1))
@@ -68,6 +69,7 @@ jobs:
               --tags=load-balanced-backend \
               --boot-disk-size=100GB \
               --boot-disk-type=pd-balanced \
+              --boot-disk-kms-key=$VM_KEY_ID \
               --image=projects/cool-academy-413922/global/images/$LATEST_IMAGE \
               --service-account=virtual-machine@cool-academy-413922.iam.gserviceaccount.com \
               --scopes=https://www.googleapis.com/auth/cloud-platform \
@@ -91,7 +93,9 @@ jobs:
 
       - name: "Recreating instances in the managed instance group"
         run: |
-          gcloud compute instance-groups managed rolling-action replace app-instance-group-manager \
+          CURRENT_VERSION=$(gcloud secrets versions access latest --secret="APP_INSTANCE_TEMPLATE_VERSION")
+          gcloud compute instance-groups managed rolling-action start-update app-instance-group-manager \
+              --version=template=projects/cool-academy-413922/regions/us-central1/instanceTemplates/app-instance-template-$CURRENT_VERSION \
               --replacement-method=recreate \
               --max-surge=0 \
               --region=us-central1
